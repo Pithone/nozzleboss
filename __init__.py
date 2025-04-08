@@ -2,7 +2,7 @@ bl_info = {
     "name": "nozzleboss",
     "description": "G-code Importer/Editor/Re-Exporter",
     "author": "Heinz Löpmeier",
-    "version": (0, 0, 1),
+    "version": (0, 0, 1, 1), # Pietro: added an extra .1  
     "blender": (3, 0, 0),
     "location": "3D View > nozzleboss",
     "category": "Import-Export"
