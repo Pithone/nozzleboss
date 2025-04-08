@@ -385,7 +385,7 @@ def export_gcode(context):
             dist = np.linalg.norm(P2-P1)
             height=np.linalg.norm(P3-P2)
 
-           width=nozzle_diameter #*1.5    # Pietro: Commented out the 1.5 multiplication factor applied by default to convert nozzle into width. Now Nozzle diameter equals extrusion width
+            width=nozzle_diameter *1.0    # Pietro: Commented out the 1.5 multiplication factor applied by default to convert nozzle into width. Now Nozzle diameter equals extrusion width
             multiplier = extrusion_weights[e_edges[i+1]]#
             multiplier = remap(multiplier, nozzleboss.min_flow, nozzleboss.max_flow)
             E_volume=dist*height*width*multiplier
