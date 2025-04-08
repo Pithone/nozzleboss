@@ -437,28 +437,34 @@ class GcodeModel:
                         obj.data.vertex_colors.new(name='Tool')
 
                         if not bpy.data.texts.get('T0'):
-                            bpy.data.texts.new('T0')
-                            bpy.data.texts['T0'].write('T0; switch to extruder T0 (any G-code macro can be passed here)\n')
+                            bpy.data.texts.new('T0') # Pietro Commented out unsupported commands
+                            #  bpy.data.texts['T0'].write('T0; switch to extruder T0 (any G-code macro can be passed here)\n')
                         if not bpy.data.texts.get('T1'):
                             bpy.data.texts.new('T1')
-                            bpy.data.texts['T1'].write('T1; switch to extruder T1 (any G-code macro can be passed here)\n')
+                            #  bpy.data.texts['T1'].write('T1; switch to extruder T1 (any G-code macro can be passed here)\n')
                         if not bpy.data.texts.get('Start'):
                             bpy.data.texts.new('Start')
-                            bpy.data.texts['Start'].write(';nozzleboss\n')
-                            bpy.data.texts['Start'].write('G28 ;homing\n')
-                            bpy.data.texts['Start'].write('M104 S180 ;set hotend temp\n')
-                            bpy.data.texts['Start'].write('M190 S50 ;wait for bed temp\n')
-                            bpy.data.texts['Start'].write('M109 S200 ;wait for hotendtemp\n')
-                            bpy.data.texts['Start'].write('M83; relative extrusion mode (REQUIRED)\n')
+                                # Pietro Commented out unsupported commands
+                            # bpy.data.texts['Start'].write(';nozzleboss\n')
+                            # bpy.data.texts['Start'].write('G28 ;homing\n')
+                            # bpy.data.texts['Start'].write('M104 S180 ;set hotend temp\n')
+                            # bpy.data.texts['Start'].write('M190 S50 ;wait for bed temp\n')
+                            # bpy.data.texts['Start'].write('M109 S200 ;wait for hotendtemp\n')
+                            bpy.data.texts['Start'].write(';nozzleboss (Pietro Edit 2025.04.03)\n') #Pietro; Edited start
+                            bpy.data.texts['Start'].write('G1 Z8 ; Rise to purge bucket edge\n') #Pietro; Edited start
+                            bpy.data.texts['Start'].write('G1 X35 ; Wipe nozzle to bucket\n') #Pietro; Edited start
+                            bpy.data.texts['Start'].write('G1 Z30 ; Lower Bed to avoid collisions\n') #Pietro; Edited start
+                            bpy.data.texts['Start'].write('M83; relative extrusion mode (REQUIRED)\n') #Pietro; Edited start
                             
                             
                         if not bpy.data.texts.get('End'):
                             bpy.data.texts.new('End')
-                            bpy.data.texts['End'].write('G10 ;retract\n')
-                            bpy.data.texts['End'].write('M104 S0 ;deactivate hotend\n')
-                            bpy.data.texts['End'].write('M140 S0 ;deactivate bed\n')
-                            bpy.data.texts['End'].write('G28 ;homing\n')
-                            bpy.data.texts['End'].write('M84 ;turn off motors\n')
+                            # bpy.data.texts['End'].write('G10 ;retract\n')
+                            # bpy.data.texts['End'].write('M104 S0 ;deactivate hotend\n')
+                            # bpy.data.texts['End'].write('M140 S0 ;deactivate bed\n')
+                            # bpy.data.texts['End'].write('G28 ;homing\n')
+                            # bpy.data.texts['End'].write('M84 ;turn off motors\n')
+                            bpy.data.texts['End'].write(';See you soon Space Cowboy \n') # Pietro: Commented Out rest
 
 
 
