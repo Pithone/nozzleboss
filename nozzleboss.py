@@ -111,7 +111,7 @@ class gcode_settings(bpy.types.PropertyGroup):
     nozzle_diameter: FloatProperty(
         name = "",
         description = "Nozzle diameter - used to calculate the extrusion width",
-        default = 0.4
+        default = 1 # Pietro: Changed default to 1.0 mm
         )
                     
     travel_speed: IntProperty(
@@ -194,49 +194,51 @@ class NOZZLEBOSS_PT_Panel(bpy.types.Panel):
         col.prop(nozzleboss, "extrusion_speed", text='Extrusion Speed')
 
         col.separator(factor=1.5)
-        
-        row=col.row() #aus col new row machen, beginnt neue zeile und startet dann in der reihe
-        row.label(text="Flow Multiplier:") 
-        row.separator(factor=2)
-        row.label(text="min:") 
-        row.label(text="max:") 
-        row = col.row(align=True)
-        row.prop_search(nozzleboss, "flow_map", context.active_object.data, "vertex_colors", text="")
-        row.separator()
-        row.prop(nozzleboss, "min_flow")
-        row.prop(nozzleboss, "max_flow")
 
-        col.separator()
-        col.label(text="Speed Multiplier:") 
-        row = col.row(align=True)
-        row.prop_search(nozzleboss, "speed_map", context.active_object.data, "vertex_colors", text="")    
-        row.separator()   
-        row.prop(nozzleboss, "min_speed")
-        row.prop(nozzleboss, "max_speed")
+# Pietro: Commented out Tool changer UI
+      
+        # row=col.row() #aus col new row machen, beginnt neue zeile und startet dann in der reihe
+        # row.label(text="Flow Multiplier:") 
+        # row.separator(factor=2)
+        # row.label(text="min:") 
+        # row.label(text="max:") 
+        # row = col.row(align=True)
+        # row.prop_search(nozzleboss, "flow_map", context.active_object.data, "vertex_colors", text="")
+        # row.separator()
+        # row.prop(nozzleboss, "min_flow")
+        # row.prop(nozzleboss, "max_flow")
+
+        # col.separator()
+        # col.label(text="Speed Multiplier:") 
+        # row = col.row(align=True)
+        # row.prop_search(nozzleboss, "speed_map", context.active_object.data, "vertex_colors", text="")    
+        # row.separator()   
+        # row.prop(nozzleboss, "min_speed")
+        # row.prop(nozzleboss, "max_speed")
      
-        col.separator(factor=2)
+        # col.separator(factor=2)
     
-        #col.label(text="Tool change based on color:") 
-        col.prop(nozzleboss, 'tool_color')
+        # #col.label(text="Tool change based on color:") 
+        # col.prop(nozzleboss, 'tool_color')
        
         
-        row = col.row(align=True)
-        row.enabled = nozzleboss.tool_color
-        row.prop(nozzleboss, "color_T0", text="")
-        row.prop_search(nozzleboss, "T0", bpy.data, "texts", text="")   
-        row.separator(factor=2)   
-        row.prop(nozzleboss, "color_T1", text="")
-        row.prop_search(nozzleboss, "T1", bpy.data, "texts", text="")   
+        # row = col.row(align=True)
+        # row.enabled = nozzleboss.tool_color
+        # row.prop(nozzleboss, "color_T0", text="")
+        # row.prop_search(nozzleboss, "T0", bpy.data, "texts", text="")   
+        # row.separator(factor=2)   
+        # row.prop(nozzleboss, "color_T1", text="")
+        # row.prop_search(nozzleboss, "T1", bpy.data, "texts", text="")   
 
 
-        col.separator(factor=2)
+        # col.separator(factor=2)
 
-        row=col.row(align=True) #start new column in row mode (row mode every element gets put behind each other)
-        row.label(text='Start G-code:')
-        row.prop_search(nozzleboss, "start", bpy.data, "texts", text="")   
-        row=col.row(align=True)
-        row.label(text='End G-code:')
-        row.prop_search(nozzleboss, "end", bpy.data, "texts", text="")   
+        # row=col.row(align=True) #start new column in row mode (row mode every element gets put behind each other)
+        # row.label(text='Start G-code:')
+        # row.prop_search(nozzleboss, "start", bpy.data, "texts", text="")   
+        # row=col.row(align=True)
+        # row.label(text='End G-code:')
+        # row.prop_search(nozzleboss, "end", bpy.data, "texts", text="")   
         
         col.separator(factor=2)
         row=col.row(align=True) 
@@ -287,20 +289,12 @@ def export_gcode(context):
         bpy.data.texts['T1'].write('T1; switch to extruder T1 (any G-code macro can be passed here)\n')
     if not bpy.data.texts.get('Start'):
         bpy.data.texts.new('Start')
-        bpy.data.texts['Start'].write(';nozzleboss\n')
-        bpy.data.texts['Start'].write('G28 ;homing\n')
-        bpy.data.texts['Start'].write('M104 S180 ;set hotend temp\n')
-        bpy.data.texts['Start'].write('M190 S50 ;wait for bed temp\n')
-        bpy.data.texts['Start'].write('M109 S200 ;wait for hotendtemp\n')
+        bpy.data.texts['Start'].write(';nozzleboss Pietro edit 2025.04.03\n') # Pietro: Marking gcode with altered script + removed unsupported Gcode comands
         bpy.data.texts['Start'].write('M83; relative extrusion mode (REQUIRED)\n')
 
     if not bpy.data.texts.get('End'):
         bpy.data.texts.new('End')
-        bpy.data.texts['End'].write('G10 ;retract\n')
-        bpy.data.texts['End'].write('M104 S0 ;deactivate hotend\n')
-        bpy.data.texts['End'].write('M140 S0 ;deactivate bed\n')
-        bpy.data.texts['End'].write('G28 ;homing\n')
-        bpy.data.texts['End'].write('M84 ;turn off motors\n')
+        bpy.data.texts['End'].write(';Goodnight\n') # Pietro: Removed Default end gcode comands
 
 
     scene = context.scene
@@ -311,7 +305,7 @@ def export_gcode(context):
     gcode_txt = open(bpy.path.abspath("//")+bpy.path.basename(filename)+".gcode","w")
 
     _txt = []
-    start_code = read_textblock('Start')+'\n'#'G28\nM140 S50\nM109 S190\nM83\nG1 F600\n;RGB,-1,-1,-1\nM163 S0 P0\nM163 S1 P0\nM163 S2 P1\nM163 S3 P1\nM163 S4 P1\nM164 S0\nT0\n'
+    start_code = read_textblock('Start')+'\n'
     _txt.append(start_code)
     nozzle_diameter = nozzleboss.nozzle_diameter
     extrusion_speed = nozzleboss.extrusion_speed
@@ -354,13 +348,15 @@ def export_gcode(context):
     for island in sorted_islands:
         travel_dist = (Vector(verts[island[0]])-Vector(P2)).length #only retract when travel is longer than...
         if travel_dist > 1:
-            _txt.append('G10 \n')
+            _txt.append('G91 \n') #Pietro: Replaced unsupported G10 retraction with relative coordinates
+            _txt.append('G1 Z8 \n') # Pietro: added relative Z 8 jump before travel
+            _txt.append('G90 \n') # Pietro: Return to absolute coordinates
         
         #travel only from island to island    
         _txt.append(travel(P2,verts[island[0]], travel_speed*60, extrusion_speed*60)) #verts[island[0]]=next coords
         
         if travel_dist > 1:
-            _txt.append('G11 \n')   
+            _txt.append(';G11 \n')   # Pietro: Commented out G11 unretraction
             
             
         
@@ -389,11 +385,12 @@ def export_gcode(context):
             dist = np.linalg.norm(P2-P1)
             height=np.linalg.norm(P3-P2)
 
-            width=nozzle_diameter*1.5
+           width=nozzle_diameter #*1.5    # Pietro: Commented out the 1.5 multiplication factor applied by default to convert nozzle into width. Now Nozzle diameter equals extrusion width
             multiplier = extrusion_weights[e_edges[i+1]]#
             multiplier = remap(multiplier, nozzleboss.min_flow, nozzleboss.max_flow)
             E_volume=dist*height*width*multiplier
-            E=E_volume/2.405281875  ##E axis in mm not mm³, 2.405 is 1mm of 1.75mm filament (r*(PI*r), 0.875*PI*0.875
+            # Pietro: Modified Volume to mm conversion to match unique filament in use
+            E=E_volume/1  ##E axis in mm not mm³, 1 mm3 is 1mm of 1.1283 mm filament (r*(PI*r), 0.5642*PI*0.5642
 
 
     #calcF
