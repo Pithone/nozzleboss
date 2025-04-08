@@ -64,3 +64,12 @@ to see what can be done with path based printing.
 - Click "Install..." and select nozzleboss-master.zip (macOS might have auto-extracted your .zip file, just recompress the folder to .zip)
 - activate checkmark for 'Import-Export: nozzleboss' in Add-on list
 - Addon appears in N-Panel (press 'n' in viewport) and NOT via File-->Export/Import
+
+### Modification goals
+As my focus is non planar printing with a single printhead of bezier/meshes on specifically located surfaces, i made the following modifications:
+- Add Z hops between segments to avoid collision on the surface(could be improved by maintaning the z height while traveling to the next XY coordinate for extrusion)
+- Add unique purgind behaviour
+- Remove from UI references to multitool and extrusion modifier
+- Made Nozzle Diameter = extrusion width (Originally extrusion width was 1.5 of nozzle)
+- Changed Filament diameter and therfore mm3 output of the extruder to match 1mm = 1mm3
+- Removed Start-Travel-End Gcode commands that are unsupported on my printer
