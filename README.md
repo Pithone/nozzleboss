@@ -73,3 +73,5 @@ As my focus is non planar printing with a single printhead of bezier/meshes on s
 - Made Nozzle Diameter = extrusion width (Originally extrusion width was 1.5 of nozzle)
 - Changed Filament diameter and therfore mm3 output of the extruder to match 1mm = 1mm3
 - Removed Start-Travel-End Gcode commands that are unsupported on my printer
+
+![image](https://github.com/user-attachments/assets/56e4e5cd-5d10-42d2-94c8-61d75e6990f0)
